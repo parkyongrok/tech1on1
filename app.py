@@ -53,7 +53,7 @@ def start_chat() -> None:
     st.session_state.chat_started = True  # 채팅 시작 상태를 True로 설정합니다.
     st.session_state.memory = set_memory()  # 메모리를 초기화합니다.
     st.session_state.chain = initialize_chain(
-        llm, st.session_state.character_name, st.session_state.memory
+        llm, st.session_state.memory
     )  # 체인을 초기화합니다.
 
 
