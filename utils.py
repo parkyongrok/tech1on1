@@ -33,17 +33,14 @@ def load_model(model_name: str) -> ChatOpenAI:
     return llm 
 
 
-def load_prompt(character_name: str) -> str:
+def load_prompt() -> str:
     """
-    캐릭터 이름에 따라 프롬프트 파일을 로드합니다.
-
-    Args:
-        character_name (str): 캐릭터의 이름.
-
+    프롬프트 파일을 로드합니다.
+    
     Returns:
         str: 로드된 프롬프트 내용.
     """
-    with open(f"prompts/{character_name}.prompt", "r", encoding="utf-8") as file:
+    with open(f"prompt/prompt.prompt", "r", encoding="utf-8") as file:
         prompt = file.read().strip()
     return prompt
 
@@ -58,19 +55,18 @@ def set_memory() -> ConversationBufferMemory:
     return ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 
 
-def initialize_chain(llm: ChatOpenAI, character_name: str, memory: ConversationBufferMemory) -> LLMChain:
+def initialize_chain(llm: ChatOpenAI, memory: ConversationBufferMemory) -> LLMChain:
     """
-    주어진 LLM과 캐릭터 이름, 메모리를 기반으로 체인을 초기화합니다.
+    주어진 LLM과 메모리를 기반으로 체인을 초기화합니다.
 
     Args:
         llm (ChatOpenAI): 사용할 언어 모델.
-        character_name (str): 캐릭터의 이름.
         memory (ConversationBufferMemory): 대화 메모리.
 
     Returns:
         LLMChain: 초기화된 LLM 체인.
     """
-    system_prompt = load_prompt(character_name)
+    system_prompt = load_prompt()
     custom_prompt = ChatPromptTemplate(
         messages=[
             SystemMessagePromptTemplate.from_template(system_prompt),
