@@ -11,28 +11,29 @@ from langchain_core.messages import HumanMessage, AIMessage
 from utils import load_model, set_memory, initialize_chain, generate_message
 
 # 애플리케이션 제목 설정
-st.title("페르소나 챗봇")
+st.title("너만의 친구, 밍기뉴")
 st.markdown("<br>", unsafe_allow_html=True)  # 브라우저에 줄 바꿈을 삽입합니다.
 
-# 사용자로부터 캐릭터를 선택받기 위한 드롭다운 메뉴 설정
-character_name = st.selectbox(
-    "**캐릭터를 골라줘!**",
-    ("baby_shark", "one_zero"),
-    index=0,
-    key="character_name_select",
-)
-# 선택된 캐릭터 이름을 세션 상태에 저장
-st.session_state.character_name = character_name
+# # 사용자로부터 캐릭터를 선택받기 위한 드롭다운 메뉴 설정
+# character_name = st.selectbox(
+#     "**캐릭터를 골라줘!**",
+#     ("baby_shark", "one_zero"),
+#     index=0,
+#     key="character_name_select",
+# )
+# # 선택된 캐릭터 이름을 세션 상태에 저장
+# st.session_state.character_name = character_name
 
-# 사용자로부터 모델을 선택받기 위한 드롭다운 메뉴 설정
-model_name = st.selectbox(
-    "**모델을 골라줘!**",
-    ("gpt-4o", "gpt-4-turbo", "gpt-4", "gpt-3.5-turbo"),
-    index=0,
-    key="model_name_select",
-)
+# # 사용자로부터 모델을 선택받기 위한 드롭다운 메뉴 설정
+# model_name = st.selectbox(
+#     "**모델을 골라줘!**",
+#     ("gpt-4o", "gpt-4-turbo", "gpt-4", "gpt-3.5-turbo"),
+#     index=0,
+#     key="model_name_select",
+# )
 # 선택된 모델 이름을 세션 상태에 저장
-tj
+st.session_state.model_name = "gpt-4o-mini"
+
 # 세션 상태에서 채팅 시작 여부를 확인 및 초기화
 if "chat_started" not in st.session_state:
     st.session_state.chat_started = False
@@ -43,7 +44,7 @@ if "chat_started" not in st.session_state:
 # 채팅을 시작하는 함수 정의
 def start_chat() -> None:
     """
-    선택된 모델과 캐릭터를 기반으로 채팅을 시작합니다.
+    채팅을 시작합니다.
 
     Streamlit 세션 상태를 사용하여 사용자가 선택한 모델과 캐릭터 이름에 따라
     언어 모델을 로드하고 대화 메모리를 설정하며, LLM 체인을 초기화합니다.
