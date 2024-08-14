@@ -26,9 +26,10 @@ def load_model(model_name: str) -> ChatOpenAI:
     Returns:
         ChatOpenAI: 로드된 ChatOpenAI 모델.
     """
-    load_dotenv()
+    # load_dotenv()
     
-    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+    # OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+    OPENAI_API_KEY = st.screts["OPENAI_API_KEY"]
     
     if not OPENAI_API_KEY:
         raise ValueError("API Key is not set in environment variables.")
