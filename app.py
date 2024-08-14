@@ -32,7 +32,7 @@ st.markdown("<br>", unsafe_allow_html=True)  # 브라우저에 줄 바꿈을 삽
 #     key="model_name_select",
 # )
 # 선택된 모델 이름을 세션 상태에 저장
-st.session_state.model_name = "gpt-4o-mini"
+st.session_state.model_name = "gpt-4o"
 
 # 세션 상태에서 채팅 시작 여부를 확인 및 초기화
 if "chat_started" not in st.session_state:
