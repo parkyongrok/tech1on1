@@ -29,7 +29,16 @@ def load_model(model_name: str) -> ChatOpenAI:
     load_dotenv()
     
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-    llm = ChatOpenAI(api_key=OPENAI_API_KEY, model_name=model_name)
+    
+    if not OPENAI_API_KEY:
+        raise ValueError("API Key is not set in environment variables.")
+    if not model_name:
+        raise ValueError("Model name must be provided.")
+    
+    try:
+        llm = ChatOpenAI(api_key=OPENAI_API_KEY, model_name=model_name)
+    except Exception as e:
+        raise RuntimeError(f"Failed to load model: {e}")
     return llm 
 
 
