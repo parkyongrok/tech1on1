@@ -30,7 +30,7 @@ def load_model(model_name: str) -> ChatOpenAI:
     # load_dotenv()
     
     # OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-    OPENAI_API_KEY = st.screts["OPENAI_API_KEY"]
+    OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
     
     if not OPENAI_API_KEY:
         raise ValueError("API Key is not set in environment variables.")
