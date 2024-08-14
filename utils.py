@@ -37,10 +37,11 @@ def load_model(model_name: str) -> ChatOpenAI:
     if not model_name:
         raise ValueError("Model name must be provided.")
     
-    try:
-        llm = ChatOpenAI(api_key=OPENAI_API_KEY, model_name=model_name)
-    except Exception as e:
-        raise RuntimeError(f"Failed to load model: {e}")
+    llm = ChatOpenAI(api_key=OPENAI_API_KEY, model_name=model_name)
+    # try:
+    #     llm = ChatOpenAI(api_key=OPENAI_API_KEY, model_name=model_name)
+    # except Exception as e:
+    #     raise RuntimeError(f"Failed to load model: {e}")
     return llm 
 
 
