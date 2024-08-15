@@ -1,60 +1,32 @@
-# -------------------------------------------------------------------------
-# 참고: 이 코드의 일부는 다음 GitHub 리포지토리에서 참고하였습니다:
-# https://github.com/lim-hyo-jeong/Wanted-Pre-Onboarding-AI-2407
-# 해당 리포지토리의 라이센스에 따라 사용되었습니다.
-# -------------------------------------------------------------------------
-
-# Streamlit 라이브러리 및 기타 필요한 라이브러리 임포트
+# IMPORT : Streamlit 라이브러리 및 기타 라이브러리
 import streamlit as st
 import time
 from langchain_core.messages import HumanMessage, AIMessage
 from utils import load_model, set_memory, initialize_chain, generate_message
 
-# 애플리케이션 제목 설정
+# TITLE 설정
 st.title("너만의 친구, 밍기뉴")
 st.markdown("<br>", unsafe_allow_html=True)  # 브라우저에 줄 바꿈을 삽입합니다.
 
-# # 사용자로부터 캐릭터를 선택받기 위한 드롭다운 메뉴 설정
-# character_name = st.selectbox(
-#     "**캐릭터를 골라줘!**",
-#     ("baby_shark", "one_zero"),
-#     index=0,
-#     key="character_name_select",
-# )
-# # 선택된 캐릭터 이름을 세션 상태에 저장
-# st.session_state.character_name = character_name
-
-# # 사용자로부터 모델을 선택받기 위한 드롭다운 메뉴 설정
-# model_name = st.selectbox(
-#     "**모델을 골라줘!**",
-#     ("gpt-4o", "gpt-4-turbo", "gpt-4", "gpt-3.5-turbo"),
-#     index=0,
-#     key="model_name_select",
-# )
-# 선택된 모델 이름을 세션 상태에 저장
+# GPT_4O_mini : 대화 생성 모델로 사용
 st.session_state.model_name = "gpt-4o-mini"
 
-# 세션 상태에서 채팅 시작 여부를 확인 및 초기화
+# SESSION CHECK: CHAT START 여부 및 Initialization
 if "chat_started" not in st.session_state:
     st.session_state.chat_started = False
     st.session_state.memory = None
     st.session_state.chain = None
 
 
-# 채팅을 시작하는 함수 정의
-def start_chat() -> None:
-    """
-    채팅을 시작합니다.
-
-    Streamlit 세션 상태를 사용하여 사용자가 선택한 모델과 캐릭터 이름에 따라
-    언어 모델을 로드하고 대화 메모리를 설정하며, LLM 체인을 초기화합니다.
-    """
-    llm = load_model(st.session_state.model_name)  # 선택된 모델을 로드합니다.
-    st.session_state.chat_started = True  # 채팅 시작 상태를 True로 설정합니다.
-    st.session_state.memory = set_memory()  # 메모리를 초기화합니다.
+# FUNCTION: start_chat() -> 대화를 시작하는 함수
+def start_chat() -> None:    
+    llm = load_model(st.session_state.model_name) # Load Model: gpt-4o-mini
+    # initialization session state : .chat_started, .memory, .chain
+    st.session_state.chat_started = True
+    st.session_state.memory = set_memory()
     st.session_state.chain = initialize_chain(
         llm, st.session_state.memory
-    )  # 체인을 초기화합니다.
+    )
 
 
 # "Start Chat" 버튼을 클릭했을 때 start_chat 함수를 호출
@@ -65,15 +37,16 @@ st.markdown("<br>", unsafe_allow_html=True)  # 브라우저에 줄 바꿈을 삽
 
 # 채팅이 시작된 경우
 if st.session_state.chat_started:
+    # 메모리나 체인이 초기화되지 않은 경우를 대비해 다시 초기화합니다.
     if st.session_state.memory is None or st.session_state.chain is None:
-        start_chat()  # 메모리나 체인이 초기화되지 않은 경우 다시 초기화합니다.
+        start_chat()  
 
     # 메모리에 저장된 모든 메시지를 화면에 표시
     for message in st.session_state.memory.chat_memory.messages:
         if isinstance(message, HumanMessage):
-            role = "user"  # HumanMessage는 "user" 역할로 설정
+            role = 'user'  # HumanMessage는 "user" 역할로 설정
         elif isinstance(message, AIMessage):
-            role = "assistant"  # AIMessage는 "assistant" 역할로 설정
+            role = 'assistant'  # AIMessage는 "assistant" 역할로 설정
         else:
             continue
         with st.chat_message(role):  # 해당 역할로 메시지를 화면에 표시
